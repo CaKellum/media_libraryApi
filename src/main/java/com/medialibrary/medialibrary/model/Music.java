@@ -14,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 
 
 @Component
@@ -22,12 +24,13 @@ import lombok.Setter;
 @Table(name = "MUSIC")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(includeFieldNames = true)
 public class Music {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    @Getter @Setter private long id;
+    @ToString.Exclude @Getter @Setter private long id;
 
     @Column(name = "TITLE")
     @Getter @Setter private String title;
@@ -37,9 +40,7 @@ public class Music {
 
     @Column(name = "ARTIST")
     @Getter @Setter private String artist;
-    
+
     @Column(name = "USER_ID")
 	@Getter @Setter private long userId;
-
-
 }

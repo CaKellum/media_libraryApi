@@ -22,12 +22,14 @@ import com.medialibrary.medialibrary.model.User;
 import com.medialibrary.medialibrary.services.UserService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.java.Log;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserRestController implements CrudControler<User> {
+@Log
+public class UserRestController implements CrudController<User> {
 
 	@Autowired
 	private UserService service;
@@ -38,9 +40,12 @@ public class UserRestController implements CrudControler<User> {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<User> add(@RequestBody User user) {
+		log.info("Creating user "+user.toString());
 		service.create(user);
+		log.info("Created User");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(user.getId())
 				.toUri();
+		log.info("Created "+user.toString()+" at "+location);
 		return ResponseEntity.created(location).build();
 	}
 
@@ -50,11 +55,12 @@ public class UserRestController implements CrudControler<User> {
 	@GetMapping("/{id}")
 	@Override
 	public User findById(@PathVariable long id) throws MediaNotFoundException {
+		log.info("Searching for user with id "+id);
 		Optional<User> result = service.findById(id);
-		if (result.isEmpty()) {
-			throw new MediaNotFoundException("User not found");
-		}
-		return result.get();
+		if (result.isEmpty()) throw new MediaNotFoundException("User not found");
+		User retUser = result.get();
+		log.info("returning "+retUser.toString());
+		return retUser;
 	}
 
 	@ApiResponses(value = {
@@ -63,7 +69,10 @@ public class UserRestController implements CrudControler<User> {
 	@GetMapping
 	@Override
 	public List<User> findAll() {
-		return service.findAll();
+		log.info("Getting all users");
+		List<User> userList = service.findAll();
+		log.info(userList.size() > 0 ? "returning" + userList.toString() : "no users found");
+		return userList;
 	}
 
 	@ApiResponses(value = {
@@ -72,16 +81,21 @@ public class UserRestController implements CrudControler<User> {
 	@PutMapping
 	@Override
 	public ResponseEntity<User> update(@RequestBody User user) {
-		service.update(user);
+		log.info("updating user "+user.toString());
+		service.create(user);
+		log.info("updating user");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(user.getId())
 				.toUri();
+		log.info("Created "+user.toString()+" at "+location);
 		return ResponseEntity.created(location).build();
 	}
 
 	@DeleteMapping("/{id}")
 	@Override
 	public void delete(@PathVariable("id") long id) {
+		log.info("Deleting user with id "+ id);
 		service.deleteById(id);
+		log.info("user deleted");
 	}
 
 }

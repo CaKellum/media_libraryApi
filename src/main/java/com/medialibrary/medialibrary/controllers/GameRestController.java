@@ -22,24 +22,29 @@ import com.medialibrary.medialibrary.services.GameService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.java.Log;
 
 
 @RestController
 @RequestMapping("/api/v1/games")
-public class GameRestController implements CrudControler<Game>{
+@Log
+public class GameRestController implements CrudController<Game>{
 
 	@Autowired
 	private GameService service;
-	
+
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Added game", content = @Content(mediaType = "application/json")),
 			@ApiResponse(responseCode = "500", description = "Internal error", content = @Content) })
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<Game> add(Game game) {
+		log.info("creating game "+ game.toString());
 		service.create(game);
+		log.info("created game");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(game.getId())
 				.toUri();
+		log.info("Created "+game.toString()+" at "+ location);
 		return ResponseEntity.created(location).build();
 	}
 
@@ -49,38 +54,49 @@ public class GameRestController implements CrudControler<Game>{
 	@GetMapping("/{id}")
 	@Override
 	public Game findById(long id) throws MediaNotFoundException {
+		log.info("Searching for game by id "+id);
 		Optional<Game> result = service.findById(id);
 		if(result.isEmpty()) throw new MediaNotFoundException("Game not found");
-		return result.get();
+		Game retGame = result.get();
+		log.info("found "+ retGame.toString());
+		return retGame;
 	}
 
-	
+
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Found users", content = @Content(mediaType = "application/json")),
 			@ApiResponse(responseCode = "500", description = "error", content = @Content) })
 	@GetMapping
 	@Override
 	public List<Game> findAll() {
-		return service.findAll();
+		log.info("Finding all games");
+		List<Game> gameList = service.findAll();
+		log.info(gameList.size() > 0 ? "returning "+gameList.toString() : "no games found");
+		return gameList;
 	}
 
-	
+
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "201", description = "Updated Game", content = @Content(mediaType = "application/json")),
 			@ApiResponse(responseCode = "500", description = "Internal Error", content = @Content) })
 	@PutMapping
 	@Override
 	public ResponseEntity<Game> update(Game game) {
+		log.info("Updating "+ game.toString());
 		service.update(game);
+		log.info("game updated");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(game.getId())
 				.toUri();
+		log.info("Updated at "+location);
 		return ResponseEntity.created(location).build();
 	}
 
 	@DeleteMapping("/{id}")
 	@Override
 	public void delete(long id) {
+		log.info("deleting game "+ id);
 		service.deleteById(id);
+		log.info("deleted game");
 	}
 
 }

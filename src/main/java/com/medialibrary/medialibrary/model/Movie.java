@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Component
 @Scope("prototype")
@@ -21,21 +22,20 @@ import lombok.Setter;
 @Table(name = "MOVIE")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(includeFieldNames = true)
 public class Movie{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    @Getter @Setter private long id;
-    
+    @ToString.Exclude @Getter @Setter private long id;
+
     @Column(name = "TITLE")
     @Getter @Setter private String title;
-    
+
     @Column(name = "MEDIA_FORMAT")
     @Getter @Setter private String format;
-    
+
     @Column(name = "USER_ID")
 	@Getter @Setter private long userId;
-
-
 }

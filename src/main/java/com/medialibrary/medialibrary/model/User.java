@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Component
 @Scope("prototype")
@@ -21,14 +22,15 @@ import lombok.Setter;
 @Table(name = "USERS")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(includeFieldNames = true)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    @Getter @Setter private long id;
-    
+    @ToString.Exclude @Getter @Setter private long id;
+
     @Column(name = "USERNAME")
     @Getter @Setter private String name;
-	
+
 }

@@ -22,12 +22,14 @@ import com.medialibrary.medialibrary.model.Music;
 import com.medialibrary.medialibrary.services.MusicService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.java.Log;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
 @RequestMapping("/api/v1/music")
-public class MusicRestController implements CrudControler<Music> {
+@Log
+public class MusicRestController implements CrudController<Music> {
 
 	@Autowired
 	private MusicService service;
@@ -38,9 +40,12 @@ public class MusicRestController implements CrudControler<Music> {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<Music> add(@RequestBody Music music) {
+		log.info("Creating music "+music.toString());
 		service.create(music);
+		log.info("Created Music");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(music.getId())
 				.toUri();
+		log.info("Created "+music.toString()+" at "+location);
 		return ResponseEntity.created(location).build();
 	}
 
@@ -50,10 +55,12 @@ public class MusicRestController implements CrudControler<Music> {
 	@GetMapping("/{id}")
 	@Override
 	public Music findById(@PathVariable("id") long id) throws MediaNotFoundException {
+		log.info("Searching for music with id "+id);
 		Optional<Music> result = service.findById(id);
-		if (result.isEmpty())
-			throw new MediaNotFoundException("Music Doesn't exist");
-		return result.get();
+		if (result.isEmpty()) throw new MediaNotFoundException("Music Doesn't exist");
+		Music retMusic = result.get();
+		log.info("found "+retMusic.toString());
+		return retMusic;
 	}
 
 	@ApiResponses(value = {
@@ -62,7 +69,10 @@ public class MusicRestController implements CrudControler<Music> {
 	@GetMapping
 	@Override
 	public List<Music> findAll() {
-		return service.findAll();
+		log.info("finding all music");
+		List<Music> musicList =  service.findAll();
+		log.info(musicList.size() > 0 ? "returning "+ musicList.toString() : "no music found");
+		return musicList;
 	}
 
 	@ApiResponses(value = {
@@ -71,16 +81,21 @@ public class MusicRestController implements CrudControler<Music> {
 	@PutMapping
 	@Override
 	public ResponseEntity<Music> update(@RequestBody Music music) {
+		log.info("updating music "+music.toString());
 		service.update(music);
+		log.info("updated Music");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(music.getId())
 				.toUri();
+		log.info("Updated "+music.toString()+" at "+location);
 		return ResponseEntity.created(location).build();
 	}
 
 	@DeleteMapping("/{id}")
 	@Override
 	public void delete(@PathVariable long id) {
+		log.info("Deleting music at id "+id);
 		service.deleteById(id);
+		log.info("music deleted");
 	}
 
 }

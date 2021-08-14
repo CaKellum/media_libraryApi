@@ -24,10 +24,12 @@ import com.medialibrary.medialibrary.services.MovieService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.java.Log;
 
 @RestController
 @RequestMapping("/api/v1/movies")
-public class MovieRestController implements CrudControler<Movie> {
+@Log
+public class MovieRestController implements CrudController<Movie> {
 
 	@Autowired
 	private MovieService service;
@@ -38,10 +40,12 @@ public class MovieRestController implements CrudControler<Movie> {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	@Override
 	public ResponseEntity<Movie> add(@RequestBody Movie movie) {
+		log.info("Creating Movie"+ movie.toString());
 		service.create(movie);
+		log.info("movie Created");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(movie.getId())
 				.toUri();
-		System.out.println("Created resource at: " + location.toString());
+		log.info("resource built at "+location);
 		return ResponseEntity.created(location).build();
 	}
 
@@ -53,9 +57,12 @@ public class MovieRestController implements CrudControler<Movie> {
 	public Movie findById(@PathVariable("id") long id) throws MediaNotFoundException {
 		Optional<Movie> result = service.findById(id);
 		if (result.isEmpty()) {
+			log.severe("movie with id "+ id +" Not found");
 			throw new MediaNotFoundException("Movie Not Found");
 		}
-		return result.get();
+		Movie retMovie = result.get();
+		log.info("returning "+ retMovie.toString());
+		return retMovie;
 	}
 
 	@ApiResponses(value = {
@@ -64,7 +71,10 @@ public class MovieRestController implements CrudControler<Movie> {
 	@GetMapping
 	@Override
 	public List<Movie> findAll() {
-		return service.findAll();
+		log.info("finding all movies in DB");
+		List<Movie> movieList = service.findAll();
+		log.info(movieList.size() > 0 ? "returning "+movieList.toString() : "no movies found");
+		return movieList;
 	}
 
 	@ApiResponses(value = {
@@ -73,17 +83,21 @@ public class MovieRestController implements CrudControler<Movie> {
 	@PutMapping
 	@Override
 	public ResponseEntity<Movie> update(@RequestBody Movie movie) {
+		log.info("updating "+movie.toString());
 		service.update(movie);
+		log.info("updated movie");
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{ID}").buildAndExpand(movie.getId())
 				.toUri();
-		System.out.println("Created resource at: " + location.toString());
+		log.info("updated resource at: " + location.toString());
 		return ResponseEntity.created(location).build();
 	}
 
 	@DeleteMapping("/{id}")
 	@Override
 	public void delete(@PathVariable("id") long id) {
+		log.info("deleting movie with "+ id);
 		service.deleteById(id);
+		log.info("deleted movie");
 	}
 
 }
