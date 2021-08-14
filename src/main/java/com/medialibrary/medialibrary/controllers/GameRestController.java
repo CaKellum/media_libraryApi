@@ -26,7 +26,7 @@ import lombok.extern.java.Log;
 
 
 @RestController
-@RequestMapping("/api/v1/games")
+@RequestMapping("/api/media_library/games")
 @Log
 public class GameRestController implements CrudController<Game>{
 

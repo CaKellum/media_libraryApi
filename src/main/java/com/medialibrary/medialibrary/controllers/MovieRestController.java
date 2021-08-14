@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.java.Log;
 
 @RestController
-@RequestMapping("/api/v1/movies")
+@RequestMapping("/api/media_library/movies")
 @Log
 public class MovieRestController implements CrudController<Movie> {
 

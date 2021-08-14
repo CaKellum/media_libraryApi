@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/media_library/users")
 @Log
 public class UserRestController implements CrudController<User> {
 

@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
-@RequestMapping("/api/v1/music")
+@RequestMapping("/api/media_library/music")
 @Log
 public class MusicRestController implements CrudController<Music> {
 
