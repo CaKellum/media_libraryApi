@@ -34,6 +34,7 @@ CREATE TABLE game(
     title VARCHAR(30) NOT NULL,
     type_of_game VARCHAR(10),
     media_format VARCHAR(10),
+    console varchar(10),
     user_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
