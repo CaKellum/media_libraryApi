@@ -18,6 +18,7 @@ import lombok.Setter;
 @Scope("prototype")
 @Entity
 @Table(name = "MOVIE")
+@NoArgsConstructor
 @AllArgsConstructor
 public class Movie{
 

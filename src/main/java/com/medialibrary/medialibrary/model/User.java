@@ -18,6 +18,7 @@ import lombok.Setter;
 @Scope("prototype")
 @Entity
 @Table(name = "USERS")
+@NoArgsConstructor
 @AllArgsConstructor
 public class User {
 

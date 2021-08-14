@@ -19,6 +19,7 @@ import lombok.Setter;
 @Scope("prototype")
 @Entity
 @Table(name = "MUSIC")
+@NoArgsConstructor
 @AllArgsConstructor
 public class Music {
 
