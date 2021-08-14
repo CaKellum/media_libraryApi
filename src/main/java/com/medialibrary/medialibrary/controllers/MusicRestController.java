@@ -22,13 +22,13 @@ import com.medialibrary.medialibrary.model.Music;
 import com.medialibrary.medialibrary.services.MusicService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
 @RequestMapping("/api/media_library/music")
-@Log
+@Log4j
 public class MusicRestController implements CrudController<Music> {
 
 	@Autowired

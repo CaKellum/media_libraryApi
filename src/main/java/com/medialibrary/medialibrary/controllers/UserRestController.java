@@ -22,13 +22,13 @@ import com.medialibrary.medialibrary.model.User;
 import com.medialibrary.medialibrary.services.UserService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
 @RestController
 @RequestMapping("/api/media_library/users")
-@Log
+@Log4j
 public class UserRestController implements CrudController<User> {
 
 	@Autowired

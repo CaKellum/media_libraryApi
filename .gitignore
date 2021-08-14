@@ -37,3 +37,6 @@ src/main/resources/*.properties
 doc/
 HELP.md
 *.log
+src/main/resources/static/application.html
+
+

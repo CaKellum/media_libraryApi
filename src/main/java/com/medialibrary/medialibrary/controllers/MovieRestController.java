@@ -24,11 +24,11 @@ import com.medialibrary.medialibrary.services.MovieService;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 
 @RestController
 @RequestMapping("/api/media_library/movies")
-@Log
+@Log4j
 public class MovieRestController implements CrudController<Movie> {
 
 	@Autowired
@@ -56,10 +56,7 @@ public class MovieRestController implements CrudController<Movie> {
 	@Override
 	public Movie findById(@PathVariable("id") long id) throws MediaNotFoundException {
 		Optional<Movie> result = service.findById(id);
-		if (result.isEmpty()) {
-			log.severe("movie with id "+ id +" Not found");
-			throw new MediaNotFoundException("Movie Not Found");
-		}
+		if (result.isEmpty()) throw new MediaNotFoundException("Movie Not Found");
 		Movie retMovie = result.get();
 		log.info("returning "+ retMovie.toString());
 		return retMovie;
