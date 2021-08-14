@@ -34,6 +34,9 @@ public class Music {
 
     @Column(name = "MEDIA_FORMAT")
     @Getter @Setter private String format;
+
+    @Column(name = "ARTIST")
+    @Getter @Setter private String artist;
     
     @Column(name = "USER_ID")
 	@Getter @Setter private long userId;
