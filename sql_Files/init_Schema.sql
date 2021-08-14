@@ -24,6 +24,7 @@ CREATE TABLE music(
 	id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR(30) NOT NULL,
     media_format VARCHAR(10),
+    artist VARCHAR(20),
     user_id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users(id)
